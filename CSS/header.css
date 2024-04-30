@@ -1,0 +1,47 @@
+/* Header */
+
+/* ------- Style pour main header ------- */
+
+header {
+  border: 2px solid black;
+  min-height: 4rem;
+}
+
+.mainHeader,
+.mainNav,
+.communauteNav,
+.profileNav,
+.publicNav {
+  border: 1px solid blue;
+}
+
+.mainHeader,
+.mainHeader_profile,
+.mainHeader_profile_textes {
+  display: flex;
+  align-items: center;
+}
+
+.mainHeader {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.mainHeader_profile_texte {
+  margin: 0.1em;
+}
+
+.mainHeader_profile {
+  width: 10rem;
+}
+
+.mainHeader_logo {
+  width: 14rem;
+  height: 100%;
+}
+
+.mainHeader_searchBar {
+  width: 40%;
+}
+
+/* ------- ----- ------- */
