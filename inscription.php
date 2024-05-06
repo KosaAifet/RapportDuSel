@@ -118,28 +118,21 @@
       </article>
 
       <!-- Requête Inscription -->
+      <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
       <script>
-        function inscription()
-        {
-          const nom = document.getElementById("inscription_nom").value;
-          const prenom = document.getElementById("inscription_prenom").value;
-          const genre = document.getElementById("inscription_genre").value;
-          const ddn = document.getElementById("inscription_ddn").value;
-          const email = document.getElementById("inscription_email").value;
-          const mdp = document.getElementById("inscription_mdp").value;
-          console.log({nom, prenom, genre, ddn, email, mdp})
-          axios.post('./controller/inscriptionController.php', {nom, prenom, genre, ddn, email, mdp}, {headers: {
-            "Content-Type": 'multipart/form-data'
-          }}).then((resultat)=>{
-            console.log(resultat)
-          }).catch(e=>{console.log(e)})
-        }
-        
+          document.getElementById('inscription').addEventListener('submit', function(event) {
+              event.preventDefault();
+              const formData = new FormData(this);
+              axios.post('./controller/inscriptionController.php', formData)
+                  .then(response => alert('Inscription réussie!'))
+                  .catch(error => alert('Erreur lors de l\'inscription: ' + error));
+          });
       </script>
-
     </main>
 
     <!-- Footer -->
     <?php require_once __DIR__ . './templates/footer.tpl.html';?>
   </body>
 </html>
+
+

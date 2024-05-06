@@ -94,6 +94,17 @@
       </section>
     </main>
 
+    <!-- Scripts -->
+    <script> 
+      $(document).ready(function()
+      {
+        axios.get('./controller/profileController.php', 
+        {headers:{'Authorization': 'Bearer ' + localStorage.getItem('jwt')}})
+        .then(response => console.log(response))
+        .catch(e => console.log(e));
+      }) 
+    </script>
+
     <!-- Footer -->
     <?php require_once __DIR__ . './templates/footer.tpl.html';?>
   </body>

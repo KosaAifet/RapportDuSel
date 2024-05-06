@@ -9,6 +9,6 @@ $mdp = $_POST['mdp'] ?? null;
 
 $userToken = $user->connexionUtilisateur($email, $mdp);
 
-echo "ok";
-// json_encode(array("success" => true, "jwtToken" => $userToken));
+header('Content-Type: application/json');
+echo json_encode(array("success" => true, "jwtToken" => $userToken));
 ?>

@@ -28,7 +28,7 @@
       <!-- Connexion -->
       <article class="form_connexion flex-center flex-to-column warp">
         <h1 class="marginY-s" >Connectez-vous</h1>
-        <form action="" method="post" class="flex-center wrap">
+        <form id="connexion" action="" method="post" class="flex-center wrap">
           <div class="form_connexion_input_email flex-center marginY-xs">
             <input
               id="connexion_email"
@@ -61,7 +61,7 @@
               name="connexion"
               type="submit"
               value="Connexion"
-              onclick="userConnexion()"
+              onclick=""
             />           
             <p class="marginY-s"><a href="inscription.php">Inscrivez-vous</a></p>
           </div>  
@@ -70,22 +70,19 @@
 
       <!-- Requête connexion -->
       <script>
-        function userConnexion()
-        {
-          const email = document.getElementById("connexion_email").value;
-          const mdp = document.getElementById("connexion_mdp").value;
-          console.log({email, mdp})
-          axios.post('./controller/connexionController.php', {email, mdp}, {headers: {
-            "Content-Type": 'multipart/form-data'
-          }}).then((resultat)=>{
-            console.log(resultat)
-          //   let setting = browser.cookies.set(
-          //   {userToken: resultat["userToken"]}
-          // )
-          }).catch(e=>{console.log(e)})
-        }
+          document.getElementById('connexion').addEventListener('submit', function(event) {
+              event.preventDefault();
+              const formData = new FormData(this);
+              axios.post('./controller/connexionController.php', formData)
+                  .then(response => 
+                  {
+                    alert('Connexion réussie!'); 
+                    console.log(response);
+                    window.localStorage.jwt = response.data.jwtToken
+                  })
+                  .catch(error => alert('Erreur lors de la connexion: ' + error));
+          });
       </script>
-
     </main>
 
     <!-- Footer -->
