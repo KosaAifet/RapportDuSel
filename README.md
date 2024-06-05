@@ -1,4 +1,4 @@
 hello les connards.
 comment ca va ?
 c'est les rapports du sel, habituez-vous !
-Bye Bye
+Ciao Ciao
