@@ -1,8 +1,9 @@
 <?php
-session_start();
+require "../model/database.php";
 require "../model/userModel.php";
+require "../model/auth.php";
 
-$user = new userModel($db);
+$user = new UserModel($db);
 
 $email = $_POST['email'] ?? null;
 $mdp = $_POST['mdp'] ?? null;

@@ -1,0 +1,99 @@
+/* First utility classes */
+
+.border-test {
+  border: 1px solid greenyellow;
+}
+
+input {
+  width: 100%;
+}
+
+.no-padding {
+  padding: 0%;
+}
+.no-margin {
+  margin: 0%;
+}
+
+/* ------- Flex ------- */
+
+.flex-center {
+  display: flex;
+  justify-content: center;
+}
+
+.flex-end {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.flex-spaceAround {
+  display: flex;
+  justify-content: space-around;
+}
+
+.flex-spaceBetween {
+  display: flex;
+  justify-content: space-between;
+}
+
+.flex-to-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.wrap {
+  flex-wrap: wrap;
+}
+
+/* ------- ----- ------- */
+
+/* ------- Margin X ------- */
+
+.marginX-xs {
+  margin-left: 1%;
+  margin-right: 1%;
+}
+
+.marginX-s {
+  margin-left: 3%;
+  margin-right: 3%;
+}
+
+.marginX-m {
+  margin-left: 5%;
+  margin-right: 5%;
+}
+
+/* ------- ----- ------- */
+
+/* ------- Margin Y ------- */
+
+.marginY-xs {
+  margin-top: 1%;
+  margin-bottom: 1%;
+}
+
+.marginY-s {
+  margin-top: 3%;
+  margin-bottom: 3%;
+}
+
+.marginY-m {
+  margin-top: 5%;
+  margin-bottom: 5%;
+}
+
+/* ------- ----- ------- */
+
+/* ------- lists ------- */
+
+.list-style-none {
+  list-style-type: none;
+}
+
+.list-padding {
+  padding-right: 3%;
+}
+
+/* ------- ----- ------- */

@@ -30,13 +30,25 @@
       </p>
     </div>
 
-    <a href="connexion.php">
-      <img
-        src="./images/avatarPlaceholder.jpg"
-        alt="Avatar utilisateur"
-        height="40px"
-        width="40px"
-      />
-    </a>
+    <div>
+      <a href="connexion.php">
+        <img
+          src="./images/avatarPlaceholder.jpg"
+          alt="Avatar utilisateur"
+          height="40px"
+          width="40px"
+        />
+      </a>
+      <p class="mainHeader_profile_texte">
+        <a href="connexion.php" onclick="logout()">Déconnexion</a>
+      </p>
+    </div>
   </div>
 </div>
+
+<!-- Scripts -->
+<script>
+  function logout() {
+    delete localStorage.jwt;
+  }
+</script>

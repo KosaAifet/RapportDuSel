@@ -100,7 +100,13 @@
       {
         axios.get('./controller/profileController.php', 
         {headers:{'Authorization': 'Bearer ' + localStorage.getItem('jwt')}})
-        .then(response => console.log(response))
+        .then(response => {
+          if(response.data.success == false)
+          {
+            window.location.href = "connexion.php";
+          }
+          console.log(response.data)
+        })
         .catch(e => console.log(e));
       }) 
     </script>

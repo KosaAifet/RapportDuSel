@@ -116,19 +116,19 @@
           </div>
         </form>
       </article>
-
-      <!-- Requête Inscription -->
-      <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-      <script>
-          document.getElementById('inscription').addEventListener('submit', function(event) {
-              event.preventDefault();
-              const formData = new FormData(this);
-              axios.post('./controller/inscriptionController.php', formData)
-                  .then(response => alert('Inscription réussie!'))
-                  .catch(error => alert('Erreur lors de l\'inscription: ' + error));
-          });
-      </script>
     </main>
+
+    <!-- Requête Inscription -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        document.getElementById('inscription').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formData = new FormData(this);
+            axios.post('./controller/inscriptionController.php', formData)
+                .then(response => alert('Inscription réussie!'))
+                .catch(error => alert('Erreur lors de l\'inscription: ' + error));
+        });
+    </script>
 
     <!-- Footer -->
     <?php require_once __DIR__ . './templates/footer.tpl.html';?>

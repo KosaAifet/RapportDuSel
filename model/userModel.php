@@ -1,6 +1,5 @@
 <?php
-require "database.php";
-require "config.php";
+require 'config.php';
 require '../vendor/autoload.php';
 include '../utilitaire/time.php';
 
@@ -51,8 +50,8 @@ class UserModel
             'role' => $data[0]['role']
             ];
 
-            $jwt = JWT::encode($payload, $key, 'HS256'); //Encryptage des informations
-            $info = JWT::decode($jwt, new Key($key, 'HS256')); //Decryptage des informations
+            $jwt = JWT::encode($payload, $_SESSION['key'], 'HS256'); //Encryptage des informations
+            $info = JWT::decode($jwt, new Key($_SESSION['key'], 'HS256')); //Decryptage des informations
             return $jwt;
         }
     }
@@ -72,12 +71,31 @@ class UserModel
         'pseudo' => $data[0]['pseudo'],
         'grade' => $data[0]['grade'],
         'genre' => $data[0]['genre'],
-        'age' => age($data[0]['ddn']),
+        'age' => age($data[0]['date_naissance']),
         'description' => $data[0]['description'],
         'articles' => $articles
         ];
 
         return $payload;
+    }
+
+    /* */
+    public function updateUserById($id, $nom, $prenom, $genre, $ddn, $email, $mdp)
+    {
+        $q = $this->db->prepare("UPDATE nom, prenom, genre, ddn, email, mdp SET user.nom = :nom, user.prenom = :prenom, user.genre = :genre, user.ddn = :ddn, user.email = :email, user.mdp = :mdp WHERE id = :id");
+        $q->execute(['id' => $id]);
+
+        $data = $q->fetchAll(PDO::FETCH_ASSOC);
+        return $data;
+    }
+
+    public function deleteUserById($id)
+    {
+        $q = $this->db->prepare("DELETE FROM user WHERE id = :id");
+        $q->execute(['id' => $id]);
+
+        $data = $q->fetchAll(PDO::FETCH_ASSOC);
+        return $data;
     }
 }
 ?>

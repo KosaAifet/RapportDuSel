@@ -29,10 +29,11 @@
       <section>
         <!-- Article -->
         <article>
-          <form action="" method="post">
+          <form id="crea_article" action="" method="post">
             <div> 
               <input
                 id="article_titre"
+                name="titre"
                 type="text"
                 placeholder="Titre de l'article"
                 required
@@ -61,6 +62,7 @@
 
             <textarea
               id="article_texte"
+              name="texte"
               placeholder="Ecrivez votre article"
               required
               class="form_creaArticle_textarea"
@@ -72,7 +74,7 @@
               <div class="form_creaArticle_valider"> 
                 <input
                   id="article_valider"
-                  type="button"
+                  type="submit"
                   value="Publier"
                   onclick="location.href='articles_communaute.php'"
                 />
@@ -82,6 +84,18 @@
         </article>
       </section>
     </main>
+
+    <!-- Requête Création d'articles -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        document.getElementById('crea_article').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formData = new FormData(this);
+            axios.post('./controller/articleController.php', formData)
+                .then(response => alert('Creation d\'article réussie!'))
+                .catch(error => alert('Erreur lors de la creation de l\'article: ' + error));
+        });
+    </script>
 
     <!-- Footer -->
     <?php require_once __DIR__ . './templates/footer.tpl.html';?>

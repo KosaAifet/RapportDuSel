@@ -1,9 +1,10 @@
 <!-- Requête Inscription -->
 <?php
-session_start();
+require "../model/database.php";
 require "../model/userModel.php";
+require "../model/auth.php";
 
-$user = new userModel($db);
+$user = new UserModel($db);
 
 $nom = $_POST['nom'] ?? null;
 $prenom = $_POST['prenom'] ?? null;

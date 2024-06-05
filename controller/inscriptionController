@@ -1,0 +1,16 @@
+<!-- Requête Inscription -->
+<?php
+require_once __DIR__ . './templates/database.php';
+if(isset($_POST['valider']))
+{
+    extract($_POST);
+    global $db;
+    $q = $db->prepare("INSERT INTO users(pseudo,nom,prenom,genre,date_naissance,email,mot_de_passe,role) VALUES('',:nom,:prenom,:genre,:ddn,:email,:mdp,'')");
+    $q->execute([
+            'nom' => $nom,
+            'prenom' => $prenom,
+            'genre' => $genre,
+            'ddn' => $ddn, 
+            'email' => $email,
+            'mdp' => $mdp]);
+}

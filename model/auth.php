@@ -19,15 +19,14 @@ function getBearerToken() {
 $jwt = getBearerToken();
 if ($jwt) {
     try {
-        $decoded = Firebase\JWT\JWT::decode($jwt, new Firebase\JWT\Key($key, 'HS256'));
+        $decoded = Firebase\JWT\JWT::decode($jwt, new Firebase\JWT\Key($_SESSION['key'], 'HS256'));
         // Supposons que $decoded contienne un champ avec l'identifiant utilisateur
-        $_SESSION['user_id'] = $decoded->data->userId;
+        $_SESSION['user_id'] = $decoded->id;
     } catch (Exception $e) {
         // Gérer l'exception si le JWT est invalide
-        http_response_code(401);
-        echo "Unauthorized: " . $e->getMessage();
+        header('Content-Type: application/json');
+        echo json_encode(array("success" => false, "error" => "Il n'y a pas d'utilisateur connecté"));
         exit;
     }
 }
-
 ?>

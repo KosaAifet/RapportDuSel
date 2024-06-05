@@ -76,9 +76,14 @@
               axios.post('./controller/connexionController.php', formData)
                   .then(response => 
                   {
-                    alert('Connexion réussie!'); 
-                    console.log(response);
-                    window.localStorage.jwt = response.data.jwtToken
+                    if(response.data.jwtToken)
+                    {
+                      alert('Connexion réussie!'); 
+                      console.log(response);
+                      window.localStorage.jwt = response.data.jwtToken
+                    }else{
+                      throw ("pas de jwt");
+                    }
                   })
                   .catch(error => alert('Erreur lors de la connexion: ' + error));
           });

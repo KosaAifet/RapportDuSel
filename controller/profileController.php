@@ -1,12 +1,10 @@
 <?php
-session_start();
+require "../model/database.php";
 require "../model/userModel.php";
 require '../model/auth.php';
-require '../vendor/autoload.php';
-use \firebase\JWT\JWT;
 
 
-$user = new userModel($db);
+$user = new UserModel($db);
 $id = $_SESSION['user_id'];
 $userProfile = $user->ProfileUtilisateur($id);
 
