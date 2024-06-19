@@ -76,16 +76,13 @@
               axios.post('./controller/connexionController.php', formData)
                   .then(response => 
                   {
-                    if(response.data.jwtToken)
+                    if(response.data.success && response.data.jwtToken)
                     {
-                      alert('Connexion réussie!'); 
-                      console.log(response);
+                      window.location.href = "profile.php";
                       window.localStorage.jwt = response.data.jwtToken
-                    }else{
-                      throw ("pas de jwt");
                     }
                   })
-                  .catch(error => alert('Erreur lors de la connexion: ' + error));
+                  .catch(error => alert('Identifiant ou mot de passe incorrect'))
           });
       </script>
     </main>

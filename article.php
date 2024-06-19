@@ -31,15 +31,15 @@
         <article class="">
           <div class="flex-to-column marginY-xs">
             <div class="flex-center"> 
-              <h1 class="no-margin">Titre</h1>
+              <h1 id="titre" class="no-margin">Titre</h1>
             </div>
             
             <div class="flex-center"> 
-              <h3>Nom Auteur</h3>
+              <h3 id="auteur">Nom Auteur</h3>
             </div> 
           </div>
 
-          <div class="">
+          <div id="texte" class="">
             <P>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
               tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
@@ -80,7 +80,7 @@
 
           <div class="perfect_row marginY-s">
             <div class="perfect_row flex-start marginX-xs w-70">
-              <div><p>Article ecrit par <a href="public_profile.php">Auteur</a></p></div>
+              <div><p>Article ecrit par <a id="auteurLink" href="public_profile.php"></a></p></div>
               <div class="icon marginX-xs">
                 <img
                   src="./images/avatarPlaceholder.jpg"
@@ -93,29 +93,17 @@
 
             <!-- Like et Dislike -->
             <div class="perfect_row flex-spaceAround w-30">
-              <div class="perfect_row w-40">
-                <div class="icon marginX-s">
-                  <img
-                    src="./images/like.png"
-                    alt="like"
-                    height="100%"
-                    width="100%"
-                  />
-                </div>               
-                <div class="marginX-s"><p>-n likes-</p></div>                
-              </div>
+              <div class="row">
+                <button onclick="postlike('article', true)" type="button" class="btn">
+                  <i class="fa-regular fa-thumbs-up fa-2xl"></i> <span>2</span>
+                </button>             
+              </div> 
 
-              <div class="perfect_row w-40">
-                <div class="icon marginX-s">
-                  <img
-                    src="./images/dislike.png"
-                    alt="dislike"
-                    height="100%"
-                    width="100%"
-                  />
-                </div> 
-                <div class="marginX-s"><p>-n dislikes-</p></div>
-              </div>
+              <div class="row">
+                <button type="button" class="btn">
+                  <i class="fa-regular fa-thumbs-down fa-2xl"></i> <span>2</span>
+                </button>             
+              </div> 
             </div>
           </div>
           
@@ -134,6 +122,46 @@
       </section>
     </main>
 
+    <!-- Scripts -->
+    <script>
+      $(document).ready(function()
+      {
+        const params = new URLSearchParams(window.location.search);
+        axios.get('./controller/articleController.php', 
+        {
+          headers:{'Authorization': 'Bearer ' + localStorage.getItem('jwt')}, 
+          params: {id: params.get('id')}
+        })
+        .then(response => 
+        {
+          console.log(response.data.article)
+          const article = response.data.article[0];
+          const titre = article.titre;
+          const texte = article.texte;
+          const auteur = article.pseudo;
+
+          document.getElementById("titre").innerText = titre;
+          document.getElementById("texte").innerText = texte;
+          document.getElementById("auteur").innerText = auteur;
+          document.getElementById("auteurLink").innerText = auteur;
+        })
+        .catch(e => console.log(e));
+      }) 
+    </script>
+  <script>ite
+    function postLike(liked_on, value){
+       const params = new URLSearchParams(window.location.search);
+      axios.post('./controller/likeController.php', 
+        {
+          headers:{'Authorization': 'Bearer ' + localStorage.getItem('jwt')}, 
+          data: {liked_on, value, entite_id: params.id}
+        })
+        .then(response => 
+        {
+
+        }
+    }
+  </script>
     <!-- Footer -->
     <?php require_once __DIR__ . './templates/footer.tpl.html';?>
   </body>

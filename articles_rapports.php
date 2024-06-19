@@ -42,13 +42,57 @@
         <p class="nbResultat">-Nombre de résultat-</p>
       </div>
 
-      <section>
-        <?php require_once __DIR__ . './templates/blocArticle.tpl.html';?>        
+      <section id="bloc_articles">
+
       </section>
 
       <!-- Barre de pages de résultats -->
       <?php require_once __DIR__ . './templates/barPages.tpl.html';?>
     </main>
+
+    <!-- Scripts -->
+    <script> 
+      $(document).ready(function()
+      {
+        axios.get('./controller/articleController.php', 
+        {
+          headers:{'Authorization': 'Bearer ' + localStorage.getItem('jwt')},
+          params: {all:true}
+        })
+        .then(response => {
+          console.log(response)
+          let cards = "";
+          $.each(response.data.data.rapports, (i, article)=>{
+          cards += generateCard('https://photos.onedrive.com/share/1B4175BBF5C6400E!2973?cid=1B4175BBF5C6400E&resId=1B4175BBF5C6400E!2973&authkey=!AH-A4GVkgvVSIVk&ithint=photo&e=gY5vNU', article.titre, article.texte, article.pseudo, article.id)
+          })
+          document.getElementById("bloc_articles").innerHTML = cards;
+        })
+        .catch(e => console.log(e));
+      }) 
+    </script>
+
+    <script>
+      function generateCard(img_url, title, text, author, id) {
+        const template = `
+        <div class='card mb-3' style='max-width: 540px;'>
+            <div class='row g-0'>
+                <div class='col-md-4'>
+                    <img src='${img_url}' class='img-fluid rounded-start' alt='Image'>
+                </div>
+                <div class='col-md-8'>
+                    <div class='card-body'>
+                        <a href='article.php?id=${id}'><h5 class='card-title'>${title}</h5><a/>
+                        <p class='card-text'>${text}</p>
+                        <a href='public_profile.php' class='card-text'><small class='text-body-secondary'>${author}</small></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        `;
+
+        return template;
+      }
+    </script>
 
     <!-- Footer -->
     <?php require_once __DIR__ . './templates/footer.tpl.html';?>

@@ -50,5 +50,32 @@
 <script>
   function logout() {
     delete localStorage.jwt;
+    axios
+      .get("./utilitaire/logout.php")
+      .then((x) => console.log("deconnexion"));
+  }
+
+  function checkConnexion() {
+    axios
+      .get("./model/auth.php", {
+        headers: { Authorization: "Bearer " + localStorage.getItem("jwt") },
+      })
+      .then((response) => {
+        if (response.data.success == false) {
+          window.location.href = "connexion.php";
+        }
+        console.log(response.data);
+      })
+      .catch((e) => console.log(e));
+  }
+  console.log(window.location.pathname);
+  if (
+    ![
+      "/RapportsDuSel/index.php",
+      "/RapportsDuSel/connexion.php",
+      "/RapportsDuSel/inscription.php",
+    ].includes(window.location.pathname)
+  ) {
+    checkConnexion();
   }
 </script>

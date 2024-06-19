@@ -1,6 +1,6 @@
 <?php
 require "../model/database.php";
-require "../model/articleModel.php";
+require "../model/likeModel.php";
 require "../model/auth.php";
 
 // Récupération de la méthode HTTP utilisée pour la requête
@@ -8,24 +8,33 @@ $method = $_SERVER['REQUEST_METHOD'];
 
 switch ($method) {
     case 'GET':
+        // Gérer les requêtes GET
         if (isset($_GET['id'])) {
 
-            handleGetArticle($db, $_GET['id']);        
+            handleGetLike($db, $_GET['id']);        
 
         } else if(isset($_GET['all'])) {
-            handleGetArticleByType($db, $_GET);
+            handleGetLikeByType($db, $_GET);
 
         } else {
             handleGet($db, $_GET);
 
         }
-        // Gérer les requêtes GET
-
         break;
     case 'POST':
         // Gérer les requêtes POST
-     
-        handlePost($db, $_POST);
+        if (isset($_POST['entite_id']) && isset($_POST['like_on'])) {
+
+           
+            handlePost($db, $_POST);
+
+        } else if(isset($_GET['all'])) {
+            handleGetLikeByType($db, $_GET);
+
+        } else {
+            handleGet($db, $_GET);
+
+        }
         break;
     case 'PUT':
         // Gérer les requêtes PUT
@@ -42,38 +51,38 @@ switch ($method) {
 }
 
 function handleGet($db, $data) {
-    $article = new ArticleModel($db);
+    $like = new LikeModel($db);
 
     // Traitement spécifique pour les requêtes POST
 
     $user_id = $_SESSION['user_id'];
-    $articles = $article->getArticleByUserId($user_id);
+    $likes = $like->getLikeByUserId($user_id);
 
     header('Content-Type: application/json');
-    echo json_encode(array("success" => true, "articles" => $articles));
+    echo json_encode(array("success" => true, "likes" => $likes));
 }
 
-function handleGetArticle($db, $article_id) {
+function handleGetLike($db, $like_id) {
 
-    $article = new ArticleModel($db);
+    $like = new LikeModel($db);
 
     // Traitement spécifique pour les requêtes POST
 
     // $user_id = $_SESSION['user_id'];
-    $articles = $article->getArticleById($article_id);
+    $likes = $like->getLikeById($like_id);
 
     header('Content-Type: application/json');
-    echo json_encode(array("success" => true, "article" => $articles));
+    echo json_encode(array("success" => true, "like" => $likes));
 }
 
-function handleGetArticleByType($db, $GET) 
+function handleGetLikeByType($db, $GET) 
     {
-        $article = new ArticleModel($db);
+        $like = new LikeModel($db);
 
-        $rapports = $article->getArticleByType("rapport");
-        $critiques = $article->getArticleByType("critique");
-        $news = $article->getArticleByType("news");
-        $articles = $article->getArticleByType("article");
+        $rapports = $like->getLikeByType("rapport");
+        $critiques = $like->getLikeByType("critique");
+        $news = $like->getLikeByType("news");
+        $likes = $like->getLikeByType("like");
 
         header('Content-Type: application/json');
         echo json_encode(array("success" => true,
@@ -81,32 +90,33 @@ function handleGetArticleByType($db, $GET)
             "rapports" => $rapports,
             "critiques" => $critiques,
             "news" => $news,
-            "articles" => $articles
+            "likes" => $likes
         ]));
     }
 
 function handlePost($db, $data) {
     try 
     {
-        $article = new ArticleModel($db);
-
         // Traitement spécifique pour les requêtes POST
-        $texte = $data['texte'] ?? null;
-        $titre = $data['titre'] ?? null;
-        $articleType = $data['articleType'] ?? null;
-        $newsType = $data['newsType'] ?? null;
-        $user_id = $_SESSION['user_id'];
+        $like = new LikeModel($db);
+        $liked = $data["value"];
+        $like_on = $data["liked_on"];
+        $entite_id = $data["entite_id"];
+        $user_id = $_SESSION["user_id"];
         
-        $article_id = $article->creationArticle($texte, $titre, $articleType, $newsType, $user_id);
+        $like_id = $like->creationLike($liked, $like_on, $entite_id, $user_id);
+
+        $count = $like->getLikeCountByEntiteId($like_on, $entite_id);
+        
 
         header('Content-Type: application/json');
-        echo json_encode(array("success" => true, "article_id" => $article_id));
+        echo json_encode(array("success" => true, "like_id" => $like_id, "likeCount" => $count, "entite_id" => $entite_id, "like_on" => $like_on));
     }
     catch(Exception $e)
     {
         http_response_code(500);
         header('Content-Type: application/json');
-        echo json_encode(array("success" => false, "message" => "L'article n'a pas pu être crée"));
+        echo json_encode(array("success" => false, "message" => "L'like n'a pas pu être crée"));
     }
     
 }
@@ -123,12 +133,12 @@ function handleDelete($db, $data) {
     // Logique pour supprimer des données ici
 }
 
-function verifyOwner($db, $article_id)
+function verifyOwner($db, $like_id)
 {
-    $article = new ArticleModel($db);
-    $articles = $article->getArticleById($article_id);
+    $like = new LikeModel($db);
+    $likes = $like->getLikeById($like_id);
 
-    $ownerId = $articles[0]['user_id'];
+    $ownerId = $likes[0]['user_id'];
     $user_id = $_SESSION['user_id'];
 
     return $user_id == $ownerId;

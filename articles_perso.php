@@ -64,10 +64,6 @@
 
     <!-- Scripts -->
     <script> 
-    $(document).ready(function()
-    {
-      
-    })
       $(document).ready(function()
       {
         axios.get('./controller/articleController.php', 
@@ -76,7 +72,7 @@
           console.log(response)
           let cards = "";
           $.each(response.data.articles, (i, article)=>{
-          cards += generateCard('https://photos.onedrive.com/share/1B4175BBF5C6400E!2973?cid=1B4175BBF5C6400E&resId=1B4175BBF5C6400E!2973&authkey=!AH-A4GVkgvVSIVk&ithint=photo&e=gY5vNU', article.titre, article.texte, article.nom)
+          cards += generateCard('https://photos.onedrive.com/share/1B4175BBF5C6400E!2973?cid=1B4175BBF5C6400E&resId=1B4175BBF5C6400E!2973&authkey=!AH-A4GVkgvVSIVk&ithint=photo&e=gY5vNU', article.titre, article.texte, article.pseudo, article.id)
           })
           document.getElementById("bloc_articles").innerHTML = cards;
         })
@@ -85,7 +81,7 @@
     </script>
 
     <script>
-      function generateCard(img_url, title, text, author) {
+      function generateCard(img_url, title, text, author, id) {
         const template = `
         <div class='card mb-3' style='max-width: 540px;'>
             <div class='row g-0'>
@@ -94,7 +90,7 @@
                 </div>
                 <div class='col-md-8'>
                     <div class='card-body'>
-                        <a href='article.php'><h5 class='card-title'>${title}</h5><a/>
+                        <a href='article.php?id=${id}'><h5 class='card-title'>${title}</h5><a/>
                         <p class='card-text'>${text}</p>
                         <a href='public_profile.php' class='card-text'><small class='text-body-secondary'>${author}</small></a>
                     </div>

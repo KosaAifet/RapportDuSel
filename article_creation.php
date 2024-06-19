@@ -21,6 +21,8 @@
 
       <!-- Navigation Principale -->
       <?php require_once __DIR__ . './templates/mainNav.tpl.html';?>
+
+
     </header>
 
     <!-- Main -->
@@ -42,6 +44,26 @@
             
             <br />
 
+            <div>
+              <div>
+                <select id="articleType" name="articleType" style="display: none;">
+                  <option value="article">Selectionnez le type d'Article</option>
+                  <option value="rapport">Rapport</option>
+                  <option value="critique">Critique</option>
+                  <option value="news">News</option>
+                </select>
+              </div>
+
+              <div>
+                <select id="newsType" name="newsType" style="display: none;">
+                  <option value="standard">Selectionnez le type de News</option>
+                  <option value="site">Site</option>
+                  <option value="jeux video">Jeux video</option>
+                  <option value="divers">Divers</option>
+                </select>
+              </div>
+            </div>
+
             <div class="flex-to-row">
               <div class="form_creaArticle_image"> 
                 <img
@@ -54,7 +76,7 @@
               </div>
               <div class=""> 
                 <h2 for="article_image">La Miniature</h2>
-                <p>Importer une image</p>
+                <input type="file" name="image"></input>
               </div>
             </div>
 
@@ -76,7 +98,7 @@
                   id="article_valider"
                   type="submit"
                   value="Publier"
-                  onclick="location.href='articles_communaute.php'"
+                  onclick="/*location.href='articles_communaute.php'*/"
                 />
               </div> 
             </div>                     
@@ -90,12 +112,54 @@
     <script>
         document.getElementById('crea_article').addEventListener('submit', function(event) {
             event.preventDefault();
-            const formData = new FormData(this);
-            axios.post('./controller/articleController.php', formData)
-                .then(response => alert('Creation d\'article réussie!'))
+            const formData = new FormData(this);           
+            axios.post('./controller/articleController.php', formData, {headers:{'Authorization': 'Bearer ' + localStorage.getItem('jwt')}})
+                .then(response => {
+                  var article_id = response.data.article_id;
+                  window.location.href = "article.php?id="+article_id;
+                })
                 .catch(error => alert('Erreur lors de la creation de l\'article: ' + error));
         });
     </script>
+
+    <!-- Requête check role -->
+    <script>
+      var role;
+      $(document).ready(function()
+      {
+        axios.get('./utilitaire/checkRole.php', 
+        {headers:{'Authorization': 'Bearer ' + localStorage.getItem('jwt')}})
+        .then(response => {
+          role = response.data.role;
+          if(['administrateur', 'moderateur'].includes(response.data.role))
+          {
+            document.getElementById('articleType').style="";
+          }
+  
+          console.log(response)
+        })
+        .catch(e => console.log(e));
+      }) 
+    </script>
+
+    <!-- Requête news type -->
+    <script>
+      $(document).ready(function()
+      {
+        document.getElementById('articleType').addEventListener('change', (e)=>{
+          console.log(e.target.value)
+          if(e.target.value == 'news')
+          {
+            document.getElementById('newsType').style="";
+          }
+          else
+          {
+            document.getElementById('newsType').style="display: none";
+          }
+        });
+      });
+    </script>
+
 
     <!-- Footer -->
     <?php require_once __DIR__ . './templates/footer.tpl.html';?>

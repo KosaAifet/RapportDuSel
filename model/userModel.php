@@ -39,7 +39,6 @@ class UserModel
         $q->execute(['email' => $email]);
 
         $data = $q->fetchAll(PDO::FETCH_ASSOC);
-
         if($data[0]['mot_de_passe'] == $mdp)
         {
             $payload = [

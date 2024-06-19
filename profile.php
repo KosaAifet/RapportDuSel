@@ -42,7 +42,7 @@
 
           <div class="profile_bloc_texte">
             <div class="flex-to-row flex-start flex-align-baseline">
-              <h1>Pseudo</h1>
+              <h1 id="pseudo">Pseudo</h1>
               <div class="marginX-xs"><h3>(Grade)</h3></div>
             </div>
             

@@ -22,6 +22,8 @@ if ($jwt) {
         $decoded = Firebase\JWT\JWT::decode($jwt, new Firebase\JWT\Key($_SESSION['key'], 'HS256'));
         // Supposons que $decoded contienne un champ avec l'identifiant utilisateur
         $_SESSION['user_id'] = $decoded->id;
+        $_SESSION['user_role'] = $decoded->role;
+
     } catch (Exception $e) {
         // Gérer l'exception si le JWT est invalide
         header('Content-Type: application/json');
